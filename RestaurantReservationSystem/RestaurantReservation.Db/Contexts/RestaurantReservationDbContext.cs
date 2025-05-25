@@ -19,8 +19,4 @@ public class RestaurantReservationDbContext : DbContext
         : base(options)
     {
     }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Your_Connection_String_Here");
-    }
 }
