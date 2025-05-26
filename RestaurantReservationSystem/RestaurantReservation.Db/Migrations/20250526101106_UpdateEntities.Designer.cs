@@ -12,8 +12,8 @@ using RestaurantReservation.Db.Contexts;
 namespace RestaurantReservation.Db.Migrations
 {
     [DbContext(typeof(RestaurantReservationDbContext))]
-    [Migration("20250525091416_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250526101106_UpdateEntities")]
+    partial class UpdateEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,15 @@ namespace RestaurantReservation.Db.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -54,16 +62,20 @@ namespace RestaurantReservation.Db.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EmployeeId");
 
@@ -74,11 +86,15 @@ namespace RestaurantReservation.Db.Migrations
 
             modelBuilder.Entity("RestaurantReservation.Db.Entities.MenuItem", b =>
                 {
-                    b.Property<int>("MenuItemId")
+                    b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -90,7 +106,7 @@ namespace RestaurantReservation.Db.Migrations
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
-                    b.HasKey("MenuItemId");
+                    b.HasKey("ItemId");
 
                     b.HasIndex("RestaurantId");
 
@@ -105,15 +121,23 @@ namespace RestaurantReservation.Db.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("OrderTime")
+                    b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ReservationId");
 
                     b.ToTable("Orders");
                 });
@@ -126,7 +150,7 @@ namespace RestaurantReservation.Db.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"));
 
-                    b.Property<int>("MenuItemId")
+                    b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderId")
@@ -137,7 +161,7 @@ namespace RestaurantReservation.Db.Migrations
 
                     b.HasKey("OrderItemId");
 
-                    b.HasIndex("MenuItemId");
+                    b.HasIndex("ItemId");
 
                     b.HasIndex("OrderId");
 
@@ -155,20 +179,40 @@ namespace RestaurantReservation.Db.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumberOfGuests")
+                    b.Property<int?>("CustomerId1")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ReservationTime")
+                    b.Property<int>("PartySize")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RestaurantId1")
+                        .HasColumnType("int");
+
                     b.Property<int>("TableId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TableId1")
                         .HasColumnType("int");
 
                     b.HasKey("ReservationId");
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("CustomerId1");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("RestaurantId1");
+
                     b.HasIndex("TableId");
+
+                    b.HasIndex("TableId1");
 
                     b.ToTable("Reservations");
                 });
@@ -181,11 +225,19 @@ namespace RestaurantReservation.Db.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantId"));
 
-                    b.Property<string>("Location")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OpeningHours")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -206,9 +258,6 @@ namespace RestaurantReservation.Db.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TableNumber")
                         .HasColumnType("int");
 
                     b.HasKey("TableId");
@@ -242,21 +291,29 @@ namespace RestaurantReservation.Db.Migrations
 
             modelBuilder.Entity("RestaurantReservation.Db.Entities.Order", b =>
                 {
-                    b.HasOne("RestaurantReservation.Db.Entities.Customer", "Customer")
+                    b.HasOne("RestaurantReservation.Db.Entities.Employee", "Employee")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.HasOne("RestaurantReservation.Db.Entities.Reservation", "Reservation")
+                        .WithMany("Orders")
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("RestaurantReservation.Db.Entities.OrderItem", b =>
                 {
                     b.HasOne("RestaurantReservation.Db.Entities.MenuItem", "MenuItem")
                         .WithMany("OrderItems")
-                        .HasForeignKey("MenuItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RestaurantReservation.Db.Entities.Order", "Order")
@@ -273,18 +330,38 @@ namespace RestaurantReservation.Db.Migrations
             modelBuilder.Entity("RestaurantReservation.Db.Entities.Reservation", b =>
                 {
                     b.HasOne("RestaurantReservation.Db.Entities.Customer", "Customer")
-                        .WithMany("Reservations")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RestaurantReservation.Db.Entities.Table", "Table")
+                    b.HasOne("RestaurantReservation.Db.Entities.Customer", null)
                         .WithMany("Reservations")
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("CustomerId1");
+
+                    b.HasOne("RestaurantReservation.Db.Entities.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("RestaurantReservation.Db.Entities.Restaurant", null)
+                        .WithMany("Reservations")
+                        .HasForeignKey("RestaurantId1");
+
+                    b.HasOne("RestaurantReservation.Db.Entities.Table", "Table")
+                        .WithMany()
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RestaurantReservation.Db.Entities.Table", null)
+                        .WithMany("Reservations")
+                        .HasForeignKey("TableId1");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Restaurant");
 
                     b.Navigation("Table");
                 });
@@ -302,9 +379,12 @@ namespace RestaurantReservation.Db.Migrations
 
             modelBuilder.Entity("RestaurantReservation.Db.Entities.Customer", b =>
                 {
-                    b.Navigation("Orders");
-
                     b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("RestaurantReservation.Db.Entities.Employee", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("RestaurantReservation.Db.Entities.MenuItem", b =>
@@ -317,11 +397,18 @@ namespace RestaurantReservation.Db.Migrations
                     b.Navigation("OrderItems");
                 });
 
+            modelBuilder.Entity("RestaurantReservation.Db.Entities.Reservation", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("RestaurantReservation.Db.Entities.Restaurant", b =>
                 {
                     b.Navigation("Employees");
 
                     b.Navigation("MenuItems");
+
+                    b.Navigation("Reservations");
 
                     b.Navigation("Tables");
                 });
