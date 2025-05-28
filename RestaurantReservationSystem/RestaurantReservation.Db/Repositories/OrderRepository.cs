@@ -38,11 +38,11 @@ public class OrderRepository
     public async Task DeleteAsync(int id)
     {
         var item = await _context.Orders.FindAsync(id);
-        if (item != null)
-        {
-            _context.Orders.Remove(item);
-            await _context.SaveChangesAsync();
-        }
+        if (item is null)
+            return;
+
+        _context.Orders.Remove(item);
+        await _context.SaveChangesAsync();
     }
 }
 

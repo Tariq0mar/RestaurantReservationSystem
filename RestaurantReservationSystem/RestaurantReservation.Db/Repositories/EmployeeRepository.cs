@@ -39,11 +39,11 @@ public class EmployeeRepository : IEmployeeRepository
     public async Task DeleteAsync(int id)
     {
         var employee = await _context.Employees.FindAsync(id);
-        if (employee != null)
-        {
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-        }
+        if (employee is null)
+            return;
+
+        _context.Employees.Remove(employee);
+        await _context.SaveChangesAsync();
     }
 }
 

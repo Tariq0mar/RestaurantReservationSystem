@@ -38,11 +38,11 @@ public class RestaurantRepository
     public async Task DeleteAsync(int id)
     {
         var item = await _context.Restaurants.FindAsync(id);
-        if (item != null)
-        {
-            _context.Restaurants.Remove(item);
-            await _context.SaveChangesAsync();
-        }
+        if (item is null)
+            return;
+
+        _context.Restaurants.Remove(item);
+        await _context.SaveChangesAsync();
     }
 }
 
