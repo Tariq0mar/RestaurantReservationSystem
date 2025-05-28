@@ -39,11 +39,11 @@ public class CustomerRepository : ICustomerRepository
     public async Task DeleteAsync(int id)
     {
         var customer = await _context.Customers.FindAsync(id);
-        if (customer is null)
-        {
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
-        }
+        if (customer is null) 
+            return;
+
+        _context.Customers.Remove(customer);
+        await _context.SaveChangesAsync();
     }
 }
 
