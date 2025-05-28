@@ -5,8 +5,7 @@ namespace RestaurantReservation.Db.Entities;
 public class Customer
 {
     [Key]
-    public int CustomerId { get; set; }
-
+    public int Id { get; set; }
 
     [Required]
     public string FirstName { get; set; }
@@ -19,7 +18,6 @@ public class Customer
 
     [Required]
     public string PhoneNumber { get; set; }
-
 
     public ICollection<Reservation> Reservations { get; set; }
 }

@@ -6,11 +6,10 @@ namespace RestaurantReservation.Db.Entities;
 public class Employee
 {
     [Key]
-    public int EmployeeId { get; set; }
+    public int Id { get; set; }
 
     [ForeignKey(nameof(Restaurant))]
     public int RestaurantId { get; set; }
-
 
     [Required]
     public string FirstName { get; set; }
@@ -19,7 +18,6 @@ public class Employee
     public string LastName { get; set; }
 
     public string Position { get; set; }
-
 
     public Restaurant Restaurant { get; set; }
     public ICollection<Order> Orders { get; set; }
