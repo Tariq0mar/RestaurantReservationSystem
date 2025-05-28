@@ -39,10 +39,10 @@ public class ReservationRepository
     {
         var item = await _context.Reservations.FindAsync(id);
         if (item != null)
-        {
-            _context.Reservations.Remove(item);
-            await _context.SaveChangesAsync();
-        }
+            return;
+
+        _context.Reservations.Remove(item);
+        await _context.SaveChangesAsync();
     }
 }
 

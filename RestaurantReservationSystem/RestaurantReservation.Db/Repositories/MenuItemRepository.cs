@@ -38,11 +38,11 @@ public class MenuItemRepository
     public async Task DeleteAsync(int id)
     {
         var item = await _context.MenuItems.FindAsync(id);
-        if (item != null)
-        {
-            _context.MenuItems.Remove(item);
-            await _context.SaveChangesAsync();
-        }
+        if (item is null)
+            return;
+
+        _context.MenuItems.Remove(item);
+        await _context.SaveChangesAsync();
     }
 }
 

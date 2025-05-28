@@ -38,10 +38,10 @@ public class TableRepository
     public async Task DeleteAsync(int id)
     {
         var item = await _context.Tables.FindAsync(id);
-        if (item != null)
-        {
-            _context.Tables.Remove(item);
-            await _context.SaveChangesAsync();
-        }
+        if (item is null)
+            return;
+
+        _context.Tables.Remove(item);
+        await _context.SaveChangesAsync();
     }
 }
