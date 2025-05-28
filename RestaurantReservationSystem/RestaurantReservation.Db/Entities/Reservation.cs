@@ -6,7 +6,7 @@ namespace RestaurantReservation.Db.Entities;
 public class Reservation
 {
     [Key]
-    public int ReservationId { get; set; }
+    public int Id { get; set; }
 
     [ForeignKey(nameof(Customer))]
     public int CustomerId { get; set; }
@@ -17,13 +17,11 @@ public class Reservation
     [ForeignKey(nameof(Table))]
     public int TableId { get; set; }
 
-
     [Required]
     public DateTime ReservationDate { get; set; }
 
     [Required]
     public int PartySize { get; set; }
-
 
     public Customer Customer { get; set; }
     public Restaurant Restaurant { get; set; }
