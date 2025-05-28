@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.Db.Contexts;
+using RestaurantReservation.Db.Interfaces.Services;
 using RestaurantReservation.Db.Models.Table;
 
 namespace RestaurantReservationSystem.Controllers;
@@ -10,21 +9,30 @@ namespace RestaurantReservationSystem.Controllers;
 [Route("api/tables")]
 public class TableController : ControllerBase
 {
-    private readonly RestaurantReservationDbContext _context;
+    private readonly ITableService _tableService;
     private readonly IMapper _mapper;
 
-    public TableController(RestaurantReservationDbContext context,
+    public TableController(ITableService tableService,
         IMapper mapper)
     {
-        _context = context ?? throw new ArgumentException(nameof(context));
-        _mapper = mapper ?? throw new ArgumentException(nameof(mapper));
+        _tableService = tableService ?? throw new ArgumentNullException(nameof(tableService));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TableReadDto>>> GetTables()
     {
-        var tableEntities = await _context.Tables.ToListAsync();
+        var tables = await _tableService.GetAllAsync();
+        return Ok(_mapper.Map<IEnumerable<TableReadDto>>(tables));
+    }
 
-        return Ok(_mapper.Map<IEnumerable<TableReadDto>>(tableEntities));
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TableReadDto>> GetTable(int id)
+    {
+        var table = await _tableService.GetByIdAsync(id);
+        if (table is null)
+            return NotFound();
+
+        return Ok(_mapper.Map<TableReadDto>(table));
     }
 }

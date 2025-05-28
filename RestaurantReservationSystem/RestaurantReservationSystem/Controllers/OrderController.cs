@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.Db.Contexts;
+using RestaurantReservation.Db.Interfaces.Services;
 using RestaurantReservation.Db.Models.Order;
 
 namespace RestaurantReservationSystem.Controllers;
@@ -10,21 +9,30 @@ namespace RestaurantReservationSystem.Controllers;
 [Route("api/orders")]
 public class OrderController : ControllerBase
 {
-    private readonly RestaurantReservationDbContext _context;
+    private readonly IOrderService _orderService;
     private readonly IMapper _mapper;
 
-    public OrderController(RestaurantReservationDbContext context,
+    public OrderController(IOrderService orderService,
         IMapper mapper)
     {
-        _context = context ?? throw new ArgumentException(nameof(context));
-        _mapper = mapper ?? throw new ArgumentException(nameof(mapper));
+        _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<OrderReadDto>>> GetOrders()
     {
-        var orderEntities = await _context.Orders.ToListAsync();
+        var orders = await _orderService.GetAllAsync();
+        return Ok(_mapper.Map<IEnumerable<OrderReadDto>>(orders));
+    }
 
-        return Ok(_mapper.Map<IEnumerable<OrderReadDto>>(orderEntities));
+    [HttpGet("{id}")]
+    public async Task<ActionResult<OrderReadDto>> GetOrder(int id)
+    {
+        var order = await _orderService.GetByIdAsync(id);
+        if (order == null)
+            return NotFound();
+
+        return Ok(_mapper.Map<OrderReadDto>(order));
     }
 }
