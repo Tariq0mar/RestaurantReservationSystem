@@ -6,11 +6,10 @@ namespace RestaurantReservation.Db.Entities;
 public class MenuItem
 {
     [Key]
-    public int ItemId { get; set; }
+    public int Id { get; set; }
 
     [ForeignKey(nameof(Restaurant))]
     public int RestaurantId { get; set; }
-
 
     [Required]
     public string Name { get; set; }
@@ -19,7 +18,6 @@ public class MenuItem
 
     [Required]
     public decimal Price { get; set; }
-
 
     public Restaurant Restaurant { get; set; }
     public ICollection<OrderItem> OrderItems { get; set; }
