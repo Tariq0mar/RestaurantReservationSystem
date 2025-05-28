@@ -6,7 +6,7 @@ using RestaurantReservation.Db.Models.MenuItem;
 namespace RestaurantReservationSystem.Controllers;
 
 [ApiController]
-[Route("api/MenuItems")]
+[Route("api/menu-items")]
 public class MenuItemController : ControllerBase
 {
     private readonly IMenuItemService _menuItemService;

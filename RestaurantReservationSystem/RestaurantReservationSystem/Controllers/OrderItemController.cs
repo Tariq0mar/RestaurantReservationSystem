@@ -6,7 +6,7 @@ using RestaurantReservation.Db.Models.OrderItem;
 namespace RestaurantReservationSystem.Controllers;
 
 [ApiController]
-[Route("api/orderItems")]
+[Route("api/order-items")]
 public class OrderItemController : ControllerBase
 {
     private readonly IOrderItemService _orderItemService;
