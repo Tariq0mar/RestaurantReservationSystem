@@ -14,10 +14,6 @@ public class Table
     [Required]
     public int Capacity { get; set; }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> Dev
     public Restaurant Restaurant { get; set; }
     public ICollection<Reservation> Reservations { get; set; }
 }

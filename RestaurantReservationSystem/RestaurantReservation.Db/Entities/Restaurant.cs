@@ -16,10 +16,6 @@ public class Restaurant
     public string PhoneNumber { get; set; }
     public string OpeningHours { get; set; }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> Dev
     public ICollection<Table> Tables { get; set; }
     public ICollection<Reservation> Reservations { get; set; }
     public ICollection<Employee> Employees { get; set; }
