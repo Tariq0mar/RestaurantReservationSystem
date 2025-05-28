@@ -20,19 +20,19 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ReservationReadDto>>> GetReservations()
+    public async Task<ActionResult<IEnumerable<ReservationReadResponse>>> GetReservations()
     {
         var reservations = await _reservationService.GetAllAsync();
-        return Ok(_mapper.Map<IEnumerable<ReservationReadDto>>(reservations));
+        return Ok(_mapper.Map<IEnumerable<ReservationReadResponse>>(reservations));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ReservationReadDto>> GetReservation(int id)
+    public async Task<ActionResult<ReservationReadResponse>> GetReservation(int id)
     {
         var reservation = await _reservationService.GetByIdAsync(id);
         if (reservation == null)
             return NotFound();
 
-        return Ok(_mapper.Map<ReservationReadDto>(reservation));
+        return Ok(_mapper.Map<ReservationReadResponse>(reservation));
     }
 }

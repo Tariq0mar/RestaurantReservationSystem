@@ -20,19 +20,19 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<EmployeeReadDto>>> GetEmployees()
+    public async Task<ActionResult<IEnumerable<EmployeeReadResponse>>> GetEmployees()
     {
         var employees = await _employeeService.GetAllAsync();
-        return Ok(_mapper.Map<IEnumerable<EmployeeReadDto>>(employees));
+        return Ok(_mapper.Map<IEnumerable<EmployeeReadResponse>>(employees));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<EmployeeReadDto>> GetEmployee(int id)
+    public async Task<ActionResult<EmployeeReadResponse>> GetEmployee(int id)
     {
         var employee = await _employeeService.GetByIdAsync(id);
         if (employee == null)
             return NotFound();
 
-        return Ok(_mapper.Map<EmployeeReadDto>(employee));
+        return Ok(_mapper.Map<EmployeeReadResponse>(employee));
     }
 }

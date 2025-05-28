@@ -20,19 +20,19 @@ public class MenuItemController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MenuItemReadDto>>> GetMenuItems()
+    public async Task<ActionResult<IEnumerable<MenuItemReadResponse>>> GetMenuItems()
     {
         var menuItems = await _menuItemService.GetAllAsync();
-        return Ok(_mapper.Map<IEnumerable<MenuItemReadDto>>(menuItems));
+        return Ok(_mapper.Map<IEnumerable<MenuItemReadResponse>>(menuItems));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<MenuItemReadDto>> GetMenuItem(int id)
+    public async Task<ActionResult<MenuItemReadResponse>> GetMenuItem(int id)
     {
         var menuItem = await _menuItemService.GetByIdAsync(id);
         if (menuItem == null)
             return NotFound();
 
-        return Ok(_mapper.Map<MenuItemReadDto>(menuItem));
+        return Ok(_mapper.Map<MenuItemReadResponse>(menuItem));
     }
 }

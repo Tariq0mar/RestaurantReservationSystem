@@ -20,19 +20,19 @@ public class TableController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TableReadDto>>> GetTables()
+    public async Task<ActionResult<IEnumerable<TableReadResponse>>> GetTables()
     {
         var tables = await _tableService.GetAllAsync();
-        return Ok(_mapper.Map<IEnumerable<TableReadDto>>(tables));
+        return Ok(_mapper.Map<IEnumerable<TableReadResponse>>(tables));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<TableReadDto>> GetTable(int id)
+    public async Task<ActionResult<TableReadResponse>> GetTable(int id)
     {
         var table = await _tableService.GetByIdAsync(id);
         if (table is null)
             return NotFound();
 
-        return Ok(_mapper.Map<TableReadDto>(table));
+        return Ok(_mapper.Map<TableReadResponse>(table));
     }
 }

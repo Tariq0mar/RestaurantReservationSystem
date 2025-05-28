@@ -1,6 +1,6 @@
 ﻿namespace RestaurantReservation.Db.Models.MenuItem;
 
-public class MenuItemReadDto
+public class MenuItemReadResponse
 {
     public int ItemId { get; set; }
     public int RestaurantId { get; set; }
@@ -8,5 +8,3 @@ public class MenuItemReadDto
     public string Description { get; set; }
     public decimal Price { get; set; }
 }
-
-

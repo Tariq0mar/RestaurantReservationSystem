@@ -20,19 +20,19 @@ public class RestaurantController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<RestaurantReadDto>>> GetRestaurants()
+    public async Task<ActionResult<IEnumerable<RestaurantReadResponse>>> GetRestaurants()
     {
         var restaurants = await _restaurantService.GetAllAsync();
-        return Ok(_mapper.Map<IEnumerable<RestaurantReadDto>>(restaurants));
+        return Ok(_mapper.Map<IEnumerable<RestaurantReadResponse>>(restaurants));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<RestaurantReadDto>> GetRestaurant(int id)
+    public async Task<ActionResult<RestaurantReadResponse>> GetRestaurant(int id)
     {
         var restaurant = await _restaurantService.GetByIdAsync(id);
         if (restaurant == null)
             return NotFound();
 
-        return Ok(_mapper.Map<RestaurantReadDto>(restaurant));
+        return Ok(_mapper.Map<RestaurantReadResponse>(restaurant));
     }
 }

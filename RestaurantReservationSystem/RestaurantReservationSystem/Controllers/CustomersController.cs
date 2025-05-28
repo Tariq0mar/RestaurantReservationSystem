@@ -20,20 +20,20 @@ public class CustomerControllers : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CustomerReadDto>>> GetCustomers()
+    public async Task<ActionResult<IEnumerable<CustomerReadResponse>>> GetCustomers()
     {
         var customerEntities = await _customerService.GetAllAsync();
 
-        return Ok(_mapper.Map<IEnumerable<CustomerReadDto>>(customerEntities));
+        return Ok(_mapper.Map<IEnumerable<CustomerReadResponse>>(customerEntities));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CustomerReadDto>> GetCustomer(int id)
+    public async Task<ActionResult<CustomerReadResponse>> GetCustomer(int id)
     {
         var customer = await _customerService.GetByIdAsync(id);
         if (customer is null)
             return NotFound();
 
-        return Ok(_mapper.Map<CustomerReadDto>(customer));
+        return Ok(_mapper.Map<CustomerReadResponse>(customer));
     }
 }

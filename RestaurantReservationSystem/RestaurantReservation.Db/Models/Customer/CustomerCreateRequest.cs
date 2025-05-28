@@ -1,5 +1,6 @@
 ﻿namespace RestaurantReservation.Db.Models.Customer;
 
-public class CustomerDeleteDto
+public class CustomerCreateRequest
 {
 }
+

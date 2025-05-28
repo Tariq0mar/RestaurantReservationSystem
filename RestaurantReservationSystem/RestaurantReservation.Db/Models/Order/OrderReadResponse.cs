@@ -1,6 +1,6 @@
 ﻿namespace RestaurantReservation.Db.Models.Order;
 
-public class OrderReadDto
+public class OrderReadResponse
 {
     public int OrderId { get; set; }
     public int ReservationId { get; set; }
@@ -8,4 +8,3 @@ public class OrderReadDto
     public DateTime OrderDate { get; set; }
     public decimal TotalAmount { get; set; }
 }
-

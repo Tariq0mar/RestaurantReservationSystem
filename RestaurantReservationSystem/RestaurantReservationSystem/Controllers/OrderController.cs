@@ -20,19 +20,19 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<OrderReadDto>>> GetOrders()
+    public async Task<ActionResult<IEnumerable<OrderReadResponse>>> GetOrders()
     {
         var orders = await _orderService.GetAllAsync();
-        return Ok(_mapper.Map<IEnumerable<OrderReadDto>>(orders));
+        return Ok(_mapper.Map<IEnumerable<OrderReadResponse>>(orders));
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<OrderReadDto>> GetOrder(int id)
+    public async Task<ActionResult<OrderReadResponse>> GetOrder(int id)
     {
         var order = await _orderService.GetByIdAsync(id);
         if (order == null)
             return NotFound();
 
-        return Ok(_mapper.Map<OrderReadDto>(order));
+        return Ok(_mapper.Map<OrderReadResponse>(order));
     }
 }

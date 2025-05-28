@@ -1,6 +1,6 @@
 ﻿namespace RestaurantReservation.Db.Models.Reservation;
 
-public class ReservationReadDto
+public class ReservationReadResponse
 {
     public int ReservationId { get; set; }
     public int CustomerId { get; set; }
