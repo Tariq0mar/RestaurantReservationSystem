@@ -50,4 +50,25 @@ public class ReservationController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateReservation(int id, [FromBody] ReservationUpdateRequest request)
+    {
+        if (id != request.Id)
+        {
+            return BadRequest("ID in URL and request body must match.");
+        }
+
+        var existingReservation = await _reservationService.GetByIdAsync(id);
+        if (existingReservation is null)
+        {
+            return NotFound();
+        }
+
+        _mapper.Map(request, existingReservation);
+
+        await _reservationService.UpdateAsync(existingReservation);
+
+        return NoContent();
+    }
 }

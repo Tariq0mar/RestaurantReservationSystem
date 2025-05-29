@@ -49,4 +49,25 @@ public class CustomerControllers : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateCustomer(int id, [FromBody] CustomerUpdateRequest request)
+    {
+        if (id != request.Id)
+        {
+            return BadRequest("ID in URL and request body must match.");
+        }
+
+        var existingCustomer = await _customerService.GetByIdAsync(id);
+        if (existingCustomer is null)
+        {
+            return NotFound();
+        }
+
+        _mapper.Map(request, existingCustomer);
+
+        await _customerService.UpdateAsync(existingCustomer);
+
+        return NoContent();
+    }
 }

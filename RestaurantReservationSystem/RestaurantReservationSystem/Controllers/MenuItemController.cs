@@ -50,4 +50,25 @@ public class MenuItemController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateMenuItem(int id, [FromBody] MenuItemUpdateRequest request)
+    {
+        if (id != request.Id)
+        {
+            return BadRequest("ID in URL and request body must match.");
+        }
+
+        var existingMenuItem = await _menuItemService.GetByIdAsync(id);
+        if (existingMenuItem is null)
+        {
+            return NotFound();
+        }
+
+        _mapper.Map(request, existingMenuItem);
+
+        await _menuItemService.UpdateAsync(existingMenuItem);
+
+        return NoContent();
+    }
 }

@@ -50,4 +50,25 @@ public class TableController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateTable(int id, [FromBody] TableUpdateRequest request)
+    {
+        if (id != request.Id)
+        {
+            return BadRequest("ID in URL and request body must match.");
+        }
+
+        var existingTable = await _tableService.GetByIdAsync(id);
+        if (existingTable is null)
+        {
+            return NotFound();
+        }
+
+        _mapper.Map(request, existingTable);
+
+        await _tableService.UpdateAsync(existingTable);
+
+        return NoContent();
+    }
 }

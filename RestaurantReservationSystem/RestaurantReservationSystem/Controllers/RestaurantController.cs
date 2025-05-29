@@ -50,4 +50,25 @@ public class RestaurantController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateRestaurant(int id, [FromBody] RestaurantUpdateRequest request)
+    {
+        if (id != request.Id)
+        {
+            return BadRequest("ID in URL and request body must match.");
+        }
+
+        var existingRestaurant = await _restaurantService.GetByIdAsync(id);
+        if (existingRestaurant is null)
+        {
+            return NotFound();
+        }
+
+        _mapper.Map(request, existingRestaurant);
+
+        await _restaurantService.UpdateAsync(existingRestaurant);
+
+        return NoContent();
+    }
 }

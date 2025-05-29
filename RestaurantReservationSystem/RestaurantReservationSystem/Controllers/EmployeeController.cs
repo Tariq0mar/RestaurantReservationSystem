@@ -50,4 +50,25 @@ public class EmployeeController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateEmployee(int id, [FromBody] EmployeeUpdateRequest request)
+    {
+        if (id != request.Id)
+        {
+            return BadRequest("ID in URL and request body must match.");
+        }
+
+        var existingEmployee = await _employeeService.GetByIdAsync(id);
+        if (existingEmployee is null)
+        {
+            return NotFound();
+        }
+
+        _mapper.Map(request, existingEmployee);
+
+        await _employeeService.UpdateAsync(existingEmployee);
+
+        return NoContent();
+    }
 }

@@ -50,4 +50,25 @@ public class OrderItemController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateOrderItem(int id, [FromBody] OrderItemUpdateRequest request)
+    {
+        if (id != request.Id)
+        {
+            return BadRequest("ID in URL and request body must match.");
+        }
+
+        var existingOrderItem = await _orderItemService.GetByIdAsync(id);
+        if (existingOrderItem is null)
+        {
+            return NotFound();
+        }
+
+        _mapper.Map(request, existingOrderItem);
+
+        await _orderItemService.UpdateAsync(existingOrderItem);
+
+        return NoContent();
+    }
 }
