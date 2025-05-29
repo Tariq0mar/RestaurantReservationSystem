@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using RestaurantReservation.Db.Entities;
 using RestaurantReservation.Db.Interfaces.Services;
+using RestaurantReservation.Db.Models.Customer;
 using RestaurantReservation.Db.Models.Employee;
+using RestaurantReservation.Db.Services;
 
 namespace RestaurantReservationSystem.Controllers;
 
@@ -34,5 +37,17 @@ public class EmployeeController : ControllerBase
             return NotFound();
 
         return Ok(_mapper.Map<EmployeeReadResponse>(employee));
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<EmployeeReadResponse>> CreateEmployee([FromBody] EmployeeCreateRequest request)
+    {
+        var employee = _mapper.Map<Employee>(request);
+
+        await _employeeService.AddAsync(employee);
+
+        var response = _mapper.Map<EmployeeReadResponse>(employee);
+
+        return Ok(response);
     }
 }

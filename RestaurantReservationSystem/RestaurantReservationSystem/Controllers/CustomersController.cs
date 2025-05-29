@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using RestaurantReservation.Db.Entities;
 using RestaurantReservation.Db.Interfaces.Services;
 using RestaurantReservation.Db.Models.Customer;
 
@@ -35,5 +36,17 @@ public class CustomerControllers : ControllerBase
             return NotFound();
 
         return Ok(_mapper.Map<CustomerReadResponse>(customer));
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<CustomerReadResponse>> CreateCustomer([FromBody] CustomerCreateRequest request)
+    {
+        var customer = _mapper.Map<Customer>(request);  
+
+        await _customerService.AddAsync(customer);     
+
+        var response = _mapper.Map<CustomerReadResponse>(customer);
+
+        return Ok(response);
     }
 }
