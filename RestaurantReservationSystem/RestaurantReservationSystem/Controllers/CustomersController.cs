@@ -41,9 +41,9 @@ public class CustomerControllers : ControllerBase
     [HttpPost]
     public async Task<ActionResult<CustomerReadResponse>> CreateCustomer([FromBody] CustomerCreateRequest request)
     {
-        var customer = _mapper.Map<Customer>(request);  
+        var customer = _mapper.Map<Customer>(request);
 
-        await _customerService.AddAsync(customer);     
+        await _customerService.AddAsync(customer);
 
         var response = _mapper.Map<CustomerReadResponse>(customer);
 
@@ -68,6 +68,19 @@ public class CustomerControllers : ControllerBase
 
         await _customerService.UpdateAsync(existingCustomer);
 
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteCustomer(int id)
+    {
+        var existingCustomer = await _customerService.GetByIdAsync(id);
+        if (existingCustomer is null)
+        {
+            return NotFound();
+        }
+
+        await _customerService.DeleteAsync(id);
         return NoContent();
     }
 }

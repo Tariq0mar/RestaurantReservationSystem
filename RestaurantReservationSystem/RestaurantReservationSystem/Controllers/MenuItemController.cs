@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.Db.Entities;
 using RestaurantReservation.Db.Interfaces.Services;
-using RestaurantReservation.Db.Models.Customer;
 using RestaurantReservation.Db.Models.MenuItem;
-using RestaurantReservation.Db.Services;
 
 namespace RestaurantReservationSystem.Controllers;
 
@@ -69,6 +67,19 @@ public class MenuItemController : ControllerBase
 
         await _menuItemService.UpdateAsync(existingMenuItem);
 
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteMenuItem(int id)
+    {
+        var existingMenuItem = await _menuItemService.GetByIdAsync(id);
+        if (existingMenuItem is null)
+        {
+            return NotFound();
+        }
+
+        await _menuItemService.DeleteAsync(id);
         return NoContent();
     }
 }

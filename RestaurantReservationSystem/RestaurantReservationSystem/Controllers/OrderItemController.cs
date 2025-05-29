@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.Db.Entities;
 using RestaurantReservation.Db.Interfaces.Services;
-using RestaurantReservation.Db.Models.Customer;
 using RestaurantReservation.Db.Models.OrderItem;
-using RestaurantReservation.Db.Services;
 
 namespace RestaurantReservationSystem.Controllers;
 
@@ -42,7 +40,7 @@ public class OrderItemController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<OrderItemReadResponse>> CreateOrderItem([FromBody] OrderItemCreateRequest request)
     {
-        var orderItem= _mapper.Map<OrderItem>(request);
+        var orderItem = _mapper.Map<OrderItem>(request);
 
         await _orderItemService.AddAsync(orderItem);
 
@@ -69,6 +67,19 @@ public class OrderItemController : ControllerBase
 
         await _orderItemService.UpdateAsync(existingOrderItem);
 
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteOrderItem(int id)
+    {
+        var existingOrderItem = await _orderItemService.GetByIdAsync(id);
+        if (existingOrderItem is null)
+        {
+            return NotFound();
+        }
+
+        await _orderItemService.DeleteAsync(id);
         return NoContent();
     }
 }

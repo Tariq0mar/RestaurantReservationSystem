@@ -2,7 +2,7 @@
 
 namespace RestaurantReservation.Db.Models.Reservation;
 
-public class RestaurantUpdateRequest
+public class ReservationUpdateRequest
 {
     [Required]
     public int Id { get; set; }

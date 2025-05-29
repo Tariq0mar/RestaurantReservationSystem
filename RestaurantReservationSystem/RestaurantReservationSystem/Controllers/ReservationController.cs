@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.Db.Entities;
 using RestaurantReservation.Db.Interfaces.Services;
-using RestaurantReservation.Db.Models.Customer;
 using RestaurantReservation.Db.Models.Reservation;
-using RestaurantReservation.Db.Services;
 
 namespace RestaurantReservationSystem.Controllers;
 
@@ -69,6 +67,19 @@ public class ReservationController : ControllerBase
 
         await _reservationService.UpdateAsync(existingReservation);
 
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteReservation(int id)
+    {
+        var existingReservation = await _reservationService.GetByIdAsync(id);
+        if (existingReservation is null)
+        {
+            return NotFound();
+        }
+
+        await _reservationService.DeleteAsync(id);
         return NoContent();
     }
 }
