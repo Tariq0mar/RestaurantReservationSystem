@@ -29,20 +29,32 @@ public class ReservationRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Reservation reservation)
+    public async Task<int> UpdateAsync(Reservation reservation)
     {
+        var existingReservation = await GetByIdAsync(reservation.Id);
+        if (existingReservation is null)
+        {
+            return -1;
+        }
+
         _context.Reservations.Update(reservation);
         await _context.SaveChangesAsync();
+
+        return reservation.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
         var item = await _context.Reservations.FindAsync(id);
         if (item != null)
-            return;
+        {
+            return -1;
+        }
 
         _context.Reservations.Remove(item);
         await _context.SaveChangesAsync();
+
+        return id;
     }
 }
 
