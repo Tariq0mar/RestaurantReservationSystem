@@ -28,14 +28,14 @@ public class CustomerService : ICustomerService
         await _repository.AddAsync(customer);
     }
 
-    public async Task UpdateAsync(Customer customer)
+    public async Task<int> UpdateAsync(Customer customer)
     {
-        await _repository.UpdateAsync(customer);
+        return await _repository.UpdateAsync(customer);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        await _repository.DeleteAsync(id);
+        return await _repository.DeleteAsync(id);
     }
 }
 

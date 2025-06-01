@@ -33,9 +33,12 @@ public class CustomerControllers : ControllerBase
     {
         var customer = await _customerService.GetByIdAsync(id);
         if (customer is null)
+        {
             return NotFound();
+        }
 
-        return Ok(_mapper.Map<CustomerReadResponse>(customer));
+        var response = _mapper.Map<CustomerReadResponse>(customer);
+        return Ok(response);
     }
 
     [HttpPost]
@@ -51,7 +54,7 @@ public class CustomerControllers : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateCustomer(int id, [FromBody] CustomerUpdateRequest request)
+    public async Task<ActionResult<int>> UpdateCustomer(int id, [FromBody] CustomerUpdateRequest request)
     {
         if (id != request.Id)
         {
@@ -66,21 +69,26 @@ public class CustomerControllers : ControllerBase
 
         _mapper.Map(request, existingCustomer);
 
-        await _customerService.UpdateAsync(existingCustomer);
+        var foundedId = await _customerService.UpdateAsync(existingCustomer);
 
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteCustomer(int id)
-    {
-        var existingCustomer = await _customerService.GetByIdAsync(id);
-        if (existingCustomer is null)
+        if (foundedId == -1)
         {
             return NotFound();
         }
 
-        await _customerService.DeleteAsync(id);
-        return NoContent();
+        return Ok(foundedId);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<int>> DeleteCustomer(int id)
+    {
+        var foundedId = await _customerService.DeleteAsync(id);
+
+        if (foundedId == -1)
+        {
+            return NotFound();
+        }
+
+        return Ok(foundedId);
     }
 }
