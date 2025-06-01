@@ -29,19 +29,31 @@ public class TableRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Table table)
+    public async Task<int> UpdateAsync(Table table)
     {
+        var existingTable = await GetByIdAsync(table.Id);
+        if (existingTable is null)
+        {
+            return -1;
+        }
+
         _context.Tables.Update(table);
         await _context.SaveChangesAsync();
+
+        return table.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
         var item = await _context.Tables.FindAsync(id);
         if (item is null)
-            return;
+        {
+            return -1;
+        }
 
         _context.Tables.Remove(item);
         await _context.SaveChangesAsync();
+
+        return id;
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.Db.Entities;
 using RestaurantReservation.Db.Interfaces.Services;
 using RestaurantReservation.Db.Models.Table;
+using RestaurantReservation.Db.Services;
 
 namespace RestaurantReservationSystem.Controllers;
 
@@ -65,13 +66,18 @@ public class TableController : ControllerBase
 
         _mapper.Map(request, existingTable);
 
-        await _tableService.UpdateAsync(existingTable);
+        var foundedId = await _tableService.UpdateAsync(existingTable);
 
-        return NoContent();
+        if (foundedId == -1)
+        {
+            return NotFound();
+        }
+
+        return Ok(foundedId);
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteTable(int id)
+    public async Task<ActionResult<int>> DeleteTable(int id)
     {
         var existingTable = await _tableService.GetByIdAsync(id);
         if (existingTable is null)
@@ -80,6 +86,6 @@ public class TableController : ControllerBase
         }
 
         await _tableService.DeleteAsync(id);
-        return NoContent();
+        return Ok(id);
     }
 }

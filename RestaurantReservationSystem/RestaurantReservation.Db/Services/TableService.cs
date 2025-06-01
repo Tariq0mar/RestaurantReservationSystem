@@ -28,13 +28,13 @@ public class TableService : ITableService
         await _repository.AddAsync(table);
     }
 
-    public async Task UpdateAsync(Table table)
+    public async Task<int> UpdateAsync(Table table)
     {
-        await _repository.UpdateAsync(table);
+        return await _repository.UpdateAsync(table);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        await _repository.DeleteAsync(id);
+        return await _repository.DeleteAsync(id);
     }
 }
