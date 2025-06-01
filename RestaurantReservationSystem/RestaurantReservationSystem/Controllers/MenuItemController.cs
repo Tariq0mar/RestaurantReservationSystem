@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.Db.Entities;
 using RestaurantReservation.Db.Interfaces.Services;
 using RestaurantReservation.Db.Models.MenuItem;
+using RestaurantReservation.Db.Services;
 
 namespace RestaurantReservationSystem.Controllers;
 
@@ -50,7 +51,7 @@ public class MenuItemController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateMenuItem(int id, [FromBody] MenuItemUpdateRequest request)
+    public async Task<ActionResult<int>> UpdateMenuItem(int id, [FromBody] MenuItemUpdateRequest request)
     {
         if (id != request.Id)
         {
@@ -65,13 +66,18 @@ public class MenuItemController : ControllerBase
 
         _mapper.Map(request, existingMenuItem);
 
-        await _menuItemService.UpdateAsync(existingMenuItem);
+        var foundedId = await _menuItemService.UpdateAsync(existingMenuItem);
 
-        return NoContent();
+        if (foundedId == -1)
+        {
+            return NotFound();
+        }
+
+        return Ok(foundedId);
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteMenuItem(int id)
+    public async Task<ActionResult<int>> DeleteMenuItem(int id)
     {
         var existingMenuItem = await _menuItemService.GetByIdAsync(id);
         if (existingMenuItem is null)
@@ -80,6 +86,6 @@ public class MenuItemController : ControllerBase
         }
 
         await _menuItemService.DeleteAsync(id);
-        return NoContent();
+        return Ok(id);
     }
 }
