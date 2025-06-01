@@ -30,20 +30,32 @@ public class EmployeeRepository : IEmployeeRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Employee employee)
+    public async Task<int> UpdateAsync(Employee employee)
     {
+        var existingEmployee = await GetByIdAsync(employee.Id);
+        if (existingEmployee is null)
+        {
+            return -1;
+        }
+
         _context.Employees.Update(employee);
         await _context.SaveChangesAsync();
+
+        return employee.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
         var employee = await _context.Employees.FindAsync(id);
         if (employee is null)
-            return;
+        {
+            return -1;
+        }
 
         _context.Employees.Remove(employee);
         await _context.SaveChangesAsync();
+
+        return employee.Id;
     }
 }
 
