@@ -28,13 +28,13 @@ public class OrderItemService : IOrderItemService
         await _repository.AddAsync(orderItem);
     }
 
-    public async Task UpdateAsync(OrderItem orderItem)
+    public async Task<int> UpdateAsync(OrderItem orderItem)
     {
-        await _repository.UpdateAsync(orderItem);
+        return await _repository.UpdateAsync(orderItem);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        await _repository.DeleteAsync(id);
+        return await _repository.DeleteAsync(id);
     }
 }
