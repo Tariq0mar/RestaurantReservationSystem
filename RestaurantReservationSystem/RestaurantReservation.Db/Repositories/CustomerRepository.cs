@@ -47,7 +47,8 @@ public class CustomerRepository : ICustomerRepository
     public async Task<int> DeleteAsync(int id)
     {
         var customer = await _context.Customers.FindAsync(id);
-        if (customer is null){
+        if (customer is null)
+        {
             return -1;
         }
 
