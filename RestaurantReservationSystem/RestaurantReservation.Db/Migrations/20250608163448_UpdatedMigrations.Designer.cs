@@ -12,8 +12,8 @@ using RestaurantReservation.Db.Contexts;
 namespace RestaurantReservation.Db.Migrations
 {
     [DbContext(typeof(RestaurantReservationDbContext))]
-    [Migration("20250528133933_UpdateEntities")]
-    partial class UpdateEntities
+    [Migration("20250608163448_UpdatedMigrations")]
+    partial class UpdatedMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -265,6 +265,27 @@ namespace RestaurantReservation.Db.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Tables");
+                });
+
+            modelBuilder.Entity("RestaurantReservation.Db.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("RestaurantReservation.Db.Entities.Employee", b =>

@@ -14,6 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
+// DB.Context
+builder.Services.AddDbContext<RestaurantReservationDbContext>(options =>
+    options.UseSqlServer("\"Server=(localdb)\\\\MSSQLLocalDB;Database=RestaurantReservationDB;Trusted_Connection=True;\"\r\n"));
+
+
 // Register Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
