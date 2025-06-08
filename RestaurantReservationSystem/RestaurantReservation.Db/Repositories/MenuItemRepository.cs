@@ -29,20 +29,32 @@ public class MenuItemRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(MenuItem menuItem)
+    public async Task<int> UpdateAsync(MenuItem menuItem)
     {
+        var existingMenuIteme = await GetByIdAsync(menuItem.Id);
+        if (existingMenuIteme is null)
+        {
+            return -1;
+        }
+
         _context.MenuItems.Update(menuItem);
         await _context.SaveChangesAsync();
+
+        return menuItem.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
         var item = await _context.MenuItems.FindAsync(id);
         if (item is null)
-            return;
+        {
+            return -1;
+        }
 
         _context.MenuItems.Remove(item);
         await _context.SaveChangesAsync();
+
+        return id;
     }
 }
 

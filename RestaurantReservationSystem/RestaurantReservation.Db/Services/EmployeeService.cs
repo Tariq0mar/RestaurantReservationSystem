@@ -28,14 +28,14 @@ public class EmployeeService : IEmployeeService
         await _repository.AddAsync(employee);
     }
 
-    public async Task UpdateAsync(Employee employee)
+    public async Task<int> UpdateAsync(Employee employee)
     {
-        await _repository.UpdateAsync(employee);
+        return await _repository.UpdateAsync(employee);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        await _repository.DeleteAsync(id);
+        return await _repository.DeleteAsync(id);
     }
 
 }

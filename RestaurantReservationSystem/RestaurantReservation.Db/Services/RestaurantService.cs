@@ -28,13 +28,13 @@ public class RestaurantService : IRestaurantService
         await _repository.AddAsync(restaurant);
     }
 
-    public async Task UpdateAsync(Restaurant restaurant)
+    public async Task<int> UpdateAsync(Restaurant restaurant)
     {
-        await _repository.UpdateAsync(restaurant);
+        return await _repository.UpdateAsync(restaurant);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        await _repository.DeleteAsync(id);
+       return await _repository.DeleteAsync(id);
     }
 }

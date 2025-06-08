@@ -30,20 +30,32 @@ public class CustomerRepository : ICustomerRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Customer customer)
+    public async Task<int> UpdateAsync(Customer customer)
     {
+        var existingCustomer = await GetByIdAsync(customer.Id);
+        if (existingCustomer is null)
+        {
+            return -1;
+        }
+
         _context.Customers.Update(customer);
         await _context.SaveChangesAsync();
+
+        return customer.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
         var customer = await _context.Customers.FindAsync(id);
-        if (customer is null) 
-            return;
+        if (customer is null)
+        {
+            return -1;
+        }
 
         _context.Customers.Remove(customer);
         await _context.SaveChangesAsync();
+
+        return customer.Id;
     }
 }
 

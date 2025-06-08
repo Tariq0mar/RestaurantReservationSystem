@@ -29,20 +29,32 @@ public class OrderRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Order order)
+    public async Task<int> UpdateAsync(Order order)
     {
+        var existingOrder = await GetByIdAsync(order.Id);
+        if (existingOrder is null)
+        {
+            return -1;
+        }
+
         _context.Orders.Update(order);
         await _context.SaveChangesAsync();
+
+        return order.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
         var item = await _context.Orders.FindAsync(id);
         if (item is null)
-            return;
-
+        {
+            return -1;
+        }
+        
         _context.Orders.Remove(item);
         await _context.SaveChangesAsync();
+
+        return id;
     }
 }
 

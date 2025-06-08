@@ -28,13 +28,13 @@ public class ReservationService : IReservationService
         await _repository.AddAsync(reservation);
     }
 
-    public async Task UpdateAsync(Reservation reservation)
+    public async Task<int> UpdateAsync(Reservation reservation)
     {
-        await _repository.UpdateAsync(reservation);
+        return await _repository.UpdateAsync(reservation);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        await _repository.DeleteAsync(id);
+        return await _repository.DeleteAsync(id);
     }
 }

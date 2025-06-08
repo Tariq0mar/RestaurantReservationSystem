@@ -29,20 +29,32 @@ public class RestaurantRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Restaurant restaurant)
+    public async Task<int> UpdateAsync(Restaurant restaurant)
     {
+        var existingRestaurant = await GetByIdAsync(restaurant.Id);
+        if (existingRestaurant is null)
+        {
+            return -1;
+        }
+
         _context.Restaurants.Update(restaurant);
         await _context.SaveChangesAsync();
+
+        return restaurant.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
         var item = await _context.Restaurants.FindAsync(id);
         if (item is null)
-            return;
+        {
+            return -1;
+        }
 
         _context.Restaurants.Remove(item);
         await _context.SaveChangesAsync();
+
+        return id;
     }
 }
 

@@ -7,6 +7,6 @@ public interface IRestaurantService
     Task<IEnumerable<Restaurant>> GetAllAsync();
     Task<Restaurant?> GetByIdAsync(int id);
     Task AddAsync(Restaurant restaurant);
-    Task UpdateAsync(Restaurant restaurant);
-    Task DeleteAsync(int id);
+    Task<int> UpdateAsync(Restaurant restaurant);
+    Task<int> DeleteAsync(int id);
 }

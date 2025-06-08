@@ -31,7 +31,7 @@ public class EmployeeController : ControllerBase
     public async Task<ActionResult<EmployeeReadResponse>> GetEmployee(int id)
     {
         var employee = await _employeeService.GetByIdAsync(id);
-        if (employee == null)
+        if (employee is null)
             return NotFound();
 
         return Ok(_mapper.Map<EmployeeReadResponse>(employee));
@@ -50,7 +50,7 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateEmployee(int id, [FromBody] EmployeeUpdateRequest request)
+    public async Task<ActionResult<int>> UpdateEmployee(int id, [FromBody] EmployeeUpdateRequest request)
     {
         if (id != request.Id)
         {
@@ -65,21 +65,26 @@ public class EmployeeController : ControllerBase
 
         _mapper.Map(request, existingEmployee);
 
-        await _employeeService.UpdateAsync(existingEmployee);
+        var foundedId = await _employeeService.UpdateAsync(existingEmployee);
 
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteEmployee(int id)
-    {
-        var existingEmployee = await _employeeService.GetByIdAsync(id);
-        if (existingEmployee is null)
+        if (foundedId == -1)
         {
             return NotFound();
         }
 
-        await _employeeService.DeleteAsync(id);
-        return NoContent();
+        return Ok(foundedId);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<int>> DeleteEmployee(int id)
+    {
+        var foundedId = await _employeeService.DeleteAsync(id);
+
+        if (foundedId == -1)
+        {
+            return NotFound();
+        }
+
+        return Ok(foundedId);
     }
 }

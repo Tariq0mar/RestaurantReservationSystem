@@ -28,13 +28,13 @@ public class MenuItemService : IMenuItemService
         await _repository.AddAsync(menuItem);
     }
 
-    public async Task UpdateAsync(MenuItem menuItem)
+    public async Task<int> UpdateAsync(MenuItem menuItem)
     {
-        await _repository.UpdateAsync(menuItem);
+        return await _repository.UpdateAsync(menuItem);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        await _repository.DeleteAsync(id);
+        return await _repository.DeleteAsync(id);
     }
 }

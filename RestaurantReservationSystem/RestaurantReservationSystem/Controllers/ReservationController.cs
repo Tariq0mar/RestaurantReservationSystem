@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.Db.Entities;
 using RestaurantReservation.Db.Interfaces.Services;
 using RestaurantReservation.Db.Models.Reservation;
+using RestaurantReservation.Db.Services;
 
 namespace RestaurantReservationSystem.Controllers;
 
@@ -50,7 +51,7 @@ public class ReservationController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateReservation(int id, [FromBody] ReservationUpdateRequest request)
+    public async Task<ActionResult<int>> UpdateReservation(int id, [FromBody] ReservationUpdateRequest request)
     {
         if (id != request.Id)
         {
@@ -65,13 +66,18 @@ public class ReservationController : ControllerBase
 
         _mapper.Map(request, existingReservation);
 
-        await _reservationService.UpdateAsync(existingReservation);
+        var foundedId = await _reservationService.UpdateAsync(existingReservation);
 
-        return NoContent();
+        if (foundedId == -1)
+        {
+            return NotFound();
+        }
+
+        return Ok(foundedId);
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteReservation(int id)
+    public async Task<ActionResult<int>> DeleteReservation(int id)
     {
         var existingReservation = await _reservationService.GetByIdAsync(id);
         if (existingReservation is null)
@@ -80,6 +86,6 @@ public class ReservationController : ControllerBase
         }
 
         await _reservationService.DeleteAsync(id);
-        return NoContent();
+        return Ok(id);
     }
 }
